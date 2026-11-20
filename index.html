@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <script>if(location.hostname==="rustomizator.onrender.com")location.replace("https://rustomizator.com"+location.pathname+location.search+location.hash);</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rustomizator — оптимизация Windows под Rust: больше FPS и ровный frametime</title>
+  <meta name="description" content="Rustomizator — программа для оптимизации Windows под игру Rust: таймер 0,5 мс, 124 твика, детектор лагов с причиной фризов и откат в 1 клик. Без вмешательства в процесс игры.">
+  <link rel="canonical" href="https://rustomizator.com/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#06080D">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rustomizator">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://rustomizator.com/">
+  <meta property="og:title" content="Rustomizator — оптимизация Windows под Rust">
+  <meta property="og:description" content="Таймер 0,5 мс, 124 твика, детектор лагов с причиной каждого фриза и откат любого изменения в 1 клик. Без вмешательства в процесс игры.">
+  <meta property="og:image" content="https://rustomizator.com/assets/og.jpg">
+  <meta property="og:image:alt" content="Rustomizator — оптимизация Windows под Rust">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rustomizator — оптимизация Windows под Rust">
+  <meta name="twitter:description" content="Таймер 0,5 мс, 124 твика, детектор лагов и откат в 1 клик.">
+  <meta name="twitter:image" content="https://rustomizator.com/assets/og.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Rustomizator","applicationCategory":"UtilitiesApplication","operatingSystem":"Windows 10, Windows 11","url":"https://rustomizator.com/","image":"https://rustomizator.com/assets/og.jpg","description":"Программа для оптимизации Windows под игру Rust: таймер 0,5 мс, 124 твика, детектор лагов и откат в 1 клик.","offers":{"@type":"AggregateOffer","priceCurrency":"RUB","lowPrice":"299","highPrice":"2999","offerCount":"6"}}</script>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="preload" href="assets/fonts/montserrat-cyr.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope-cyr.woff2" as="font" type="font/woff2" crossorigin>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://rustomizator-license.rustomizator-auth.workers.dev" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=pay3">
+  <link rel="stylesheet" href="demos.css">
+</head>
+<body>
+  <a class="skip" href="#main">К содержимому</a>
+
+  <!-- Фон: кибер-сетка (подсветка у курсора и бегущие импульсы — canvas), неоновые туманности с параллаксом -->
+  <div class="bg" aria-hidden="true">
+    <span class="neb neb-cyan"></span>
+    <span class="neb neb-violet"></span>
+    <span class="neb neb-blue"></span>
+    <span class="neb neb-violet-2"></span>
+    <div class="bg-grid"></div>
+    <canvas class="bg-fx"></canvas>
+    <span class="bg-vignette"></span>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-inner glass">
+      <a class="brand" href="#top" aria-label="Rustomizator — наверх">
+        <img src="assets/logo-48.webp" width="28" height="28" alt="">
+        <span class="brand-name">Rustomizator</span>
+        <span class="brand-ver" data-version>v5.3.0</span>
+      </a>
+      <nav class="topnav" aria-label="Разделы страницы">
+        <a href="#compare">До / после</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#modules">Что внутри</a>
+        <a href="#safety">Безопасность</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn-primary btn-sm" href="#pricing"><span class="lbl-full">Получить доступ</span><span class="lbl-short">Доступ</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top">
+      <!-- Интро: разлёт световых лучей и вспышка за окном программы -->
+      <div class="hero-fx" aria-hidden="true">
+        <div class="rays">
+          <i style="--l:1800px; --h:170px; --y:-40px; --c:rgba(0,242,254,.34); --o:.9; --d:0ms"></i>
+          <i style="--l:1500px; --h:64px; --y:70px; --c:rgba(79,172,254,.6); --o:1; --d:90ms"></i>
+          <i style="--l:1350px; --h:120px; --y:180px; --c:rgba(155,92,255,.42); --o:.95; --d:160ms"></i>
+          <i style="--l:1200px; --h:22px; --y:12px; --c:rgba(205,248,255,.75); --o:.85; --d:60ms"></i>
+          <i style="--l:1700px; --h:240px; --y:-210px; --c:rgba(155,92,255,.2); --o:1; --d:220ms"></i>
+          <i style="--l:1000px; --h:14px; --y:120px; --c:rgba(0,242,254,.8); --o:.7; --d:300ms"></i>
+        </div>
+        <span class="hero-flare"></span>
+      </div>
+
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="hero-kicker intro"><span class="kdot"></span>Новая версия <span data-version>v5.3.0</span> · Windows 10 / 11</p>
+          <h1 data-split>Ощутимый прирост FPS и стабильный <span class="accent-text">Frametime</span> в&nbsp;Rust</h1>
+          <p class="hero-sub intro">Профессиональная оптимизация Windows под Rust: таймер 0,500&nbsp;мс, 124&nbsp;проверенных твика, детектор лагов с причиной каждого фриза и откат любого изменения в&nbsp;1&nbsp;клик — без вмешательства в&nbsp;процесс игры.</p>
+          <div class="hero-actions intro">
+            <a class="btn btn-primary btn-lg" href="#pricing">Получить доступ</a>
+            <a class="btn btn-ghost btn-lg" href="#compare">Смотреть до / после</a>
+          </div>
+          <ul class="hero-facts intro" aria-label="Коротко">
+            <li><b>124</b> твика</li>
+            <li><b>−50</b> бесполезных убрали</li>
+            <li><b>0,500</b> мс таймер</li>
+            <li><b>1</b> клик до отката</li>
+          </ul>
+        </div>
+
+        <!-- Живой 3D-макет окна программы. Тексты — из интерфейса v5. -->
+        <div class="hero-stage" id="hero-stage">
+          <span class="stage-glow" aria-hidden="true"></span>
+          <div class="aw-float">
+            <div class="app-window" id="demo-window">
+              <div class="aw-glare" aria-hidden="true"><i></i><b></b><span class="aw-sweep"></span></div>
+              <div class="aw-titlebar">
+                <img src="assets/logo-48.webp" width="16" height="16" alt="">
+                <span class="aw-title">RUSTOMIZATOR</span>
+                <span class="aw-chip" data-version>v5.3.0</span>
+                <span class="aw-win" aria-hidden="true"><i></i><i></i><i></i></span>
+              </div>
+              <div class="aw-body">
+                <div class="aw-side" aria-hidden="true">
+                  <span class="is-active">Обзор</span>
+                  <span>Оптимизация</span>
+                  <span>Rust</span>
+                  <span>Дисплей</span>
+                  <span>Система</span>
+                  <span class="aw-side-timer"><small>Таймер</small><b>0,500 мс</b></span>
+                </div>
+                <div class="aw-main">
+                  <div class="aw-card aw-ready">
+                    <div class="aw-gauge" id="g-gauge" role="img" aria-label="Готовность ПК">
+                      <svg viewBox="0 0 120 120" aria-hidden="true">
+                        <defs>
+                          <linearGradient id="g-grad" gradientUnits="userSpaceOnUse" x1="19" y1="98" x2="102" y2="26">
+                            <stop offset="0%" class="g-s0"/>
+                            <stop offset="100%" class="g-s1"/>
+                          </linearGradient>
+                          <radialGradient id="g-halo" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" class="g-h0"/>
+                            <stop offset="100%" class="g-h1"/>
+                          </radialGradient>
+                        </defs>
+                        <circle class="g-halo" cx="60" cy="60" r="44"/>
+                        <g class="g-ticks" id="g-ticks"></g>
+                        <path class="g-track" d="M 24.64 95.36 A 50 50 0 1 1 95.36 95.36"/>
+                        <path class="g-glow" id="g-glow" pathLength="100" d="M 24.64 95.36 A 50 50 0 1 1 95.36 95.36"/>
+                        <path class="g-fill" id="g-fill" pathLength="100" d="M 24.64 95.36 A 50 50 0 1 1 95.36 95.36"/>
+                        <circle class="g-dot" id="g-dot" cx="24.64" cy="95.36" r="3.6"/>
+                      </svg>
+                      <div class="aw-score"><b id="g-num">20</b><small>из 100</small></div>
+                    </div>
+                    <div class="aw-ready-copy">
+                      <span class="aw-badge">Готовность ПК</span>
+                      <p class="aw-status" id="g-status">Система засорена и имеет высокий input lag</p>
+                      <button class="aw-cta" type="button" id="g-cta">
+                        <span id="g-cta-text">⚡ Оптимизировать в 1 клик</span>
+                      </button>
+                      <p class="aw-note" id="g-note">Снимок создаётся автоматически перед первым изменением</p>
+                    </div>
+                  </div>
+
+                  <div class="aw-card aw-cats">
+                    <div class="aw-cats-head">
+                      <span class="aw-label">Категории</span>
+                      <span class="aw-count"><b id="g-on">0</b> из <span id="g-total">70</span> твиков</span>
+                    </div>
+                    <ul class="aw-toggles" id="g-toggles">
+                      <li><span>Игровая производительность и ядро</span><small>27</small><button class="sw" type="button" role="switch" aria-checked="false" data-w="27" aria-label="Игровая производительность и ядро, 27 твиков"></button></li>
+                      <li><span>Телеметрия и сбор данных</span><small>17</small><button class="sw" type="button" role="switch" aria-checked="false" data-w="17" aria-label="Телеметрия и сбор данных, 17 твиков"></button></li>
+                      <li><span>Оптимизация системы Windows</span><small>12</small><button class="sw" type="button" role="switch" aria-checked="false" data-w="12" aria-label="Оптимизация системы Windows, 12 твиков"></button></li>
+                      <li><span>Драйвер NVIDIA</span><small>9</small><button class="sw" type="button" role="switch" aria-checked="false" data-w="9" aria-label="Драйвер NVIDIA, 9 твиков"></button></li>
+                      <li><span>Сеть</span><small>5</small><button class="sw" type="button" role="switch" aria-checked="false" data-w="5" aria-label="Сеть, 5 твиков"></button></li>
+                    </ul>
+                  </div>
+
+                  <div class="aw-card aw-timer" id="g-timer">
+                    <span class="aw-label">Разрешение таймера</span>
+                    <b class="aw-big" data-text="0,500">0,500<small> мс</small></b>
+                    <span class="aw-ok"><i class="pulse"></i>Удерживается</span>
+                    <span class="aw-bar"><i></i></span>
+                    <span class="aw-scale"><small>15,625</small><small>0,500</small></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="stage-cap intro">Интерактивный макет окна — переключайте категории. Готовность — шкала проверок программы, а не FPS.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ДО / ПОСЛЕ ============ -->
+    <section class="section" id="compare">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2>До и после «Оптимизировать в&nbsp;1&nbsp;клик»</h2>
+          <p>Перетащите разделитель. Так выглядит главный экран программы: слева — до нажатия, справа — сразу после. Слева видно, что именно тормозит, — программа пишет это словами, а не процентами.</p>
+        </header>
+
+        <div class="compare-layout">
+          <!-- Живая вёрстка главного экрана V5 (реактор «Готовности ПК»), а не снимок: два одинаковых слоя, «до» обрезается разделителем. -->
+          <div class="compare glass-strong reveal" id="compare-box">
+            <div class="cmp-scene is-after" role="img" aria-label="После: готовность 100 из 100, «Система готова к игре», тормозящих настроек нет, таймер 0,500 мс удерживается">
+              <div class="sc-hero">
+                <div class="sc-reactor" style="--rc: 0, 240, 150">
+                  <span class="rx-glow"></span>
+                  <span class="rx-tilt" style="--tx: 70deg; --ty: 0deg"><span class="rx-ring rx-dash" style="--d: 26s"></span></span>
+                  <span class="rx-tilt" style="--tx: 68deg; --ty: 18deg"><span class="rx-ring" style="--d: 9s"><i></i><i></i></span></span>
+                  <span class="rx-tilt" style="--tx: 62deg; --ty: -48deg"><span class="rx-ring rx-r2" style="--d: 13s; --dir: reverse"><i></i></span></span>
+                  <svg class="rx-prog" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46"/></svg>
+                  <span class="rx-core"><b class="rx-num" data-count-to="100" data-count-from="20">100</b><small>из 100</small></span>
+                </div>
+                <div class="sc-text">
+                  <span class="sc-chip">Готовность ПК</span>
+                  <p class="sc-title">Система готова к игре</p>
+                  <p class="sc-sub">Тормозящих настроек не найдено.</p>
+                  <span class="sc-cta is-done">✓ Оптимизировано</span>
+                  <ul class="sc-why is-ok"><li>Всё, что тормозило, исправлено</li><li>Снимок для отката создан</li></ul>
+                </div>
+              </div>
+              <div class="sc-timer">
+                <p class="sc-cap">Разрешение таймера</p>
+                <p class="sc-ms">0,500 <small>мс</small></p>
+                <span class="sc-badge is-on">Удерживается</span>
+                <span class="sc-bar"><i style="width: 100%"></i></span>
+                <span class="sc-toggle is-on"><span>Удерживать</span><i></i></span>
+              </div>
+            </div>
+            <div class="cmp-over" aria-hidden="true">
+              <div class="cmp-scene is-before">
+                <div class="sc-hero">
+                  <div class="sc-reactor" style="--rc: 255, 77, 109">
+                    <span class="rx-glow"></span>
+                    <span class="rx-tilt" style="--tx: 70deg; --ty: 0deg"><span class="rx-ring rx-dash" style="--d: 40s"></span></span>
+                    <span class="rx-tilt" style="--tx: 68deg; --ty: 18deg"><span class="rx-ring" style="--d: 16s"><i></i><i></i></span></span>
+                    <span class="rx-tilt" style="--tx: 62deg; --ty: -48deg"><span class="rx-ring rx-r2" style="--d: 22s; --dir: reverse"><i></i></span></span>
+                    <span class="rx-core"><b class="rx-num">20</b><small>из 100</small></span>
+                  </div>
+                  <div class="sc-text">
+                    <span class="sc-chip">Готовность ПК</span>
+                    <p class="sc-title">Система засорена и&nbsp;имеет высокий input lag</p>
+                    <p class="sc-sub">Большинство настроек Windows не оптимизированы для игр.</p>
+                    <span class="sc-cta">⚡ Оптимизировать в 1 клик</span>
+                    <ul class="sc-why"><li>Windows притормаживает фоновые потоки игры</li><li>Включено ускорение мыши</li></ul>
+                  </div>
+                </div>
+                <div class="sc-timer">
+                  <p class="sc-cap">Разрешение таймера</p>
+                  <p class="sc-ms is-bad">15,625 <small>мс</small></p>
+                  <span class="sc-badge">Не удерживается</span>
+                  <span class="sc-bar"><i style="width: 4%"></i></span>
+                  <span class="sc-toggle"><span>Удерживать</span><i></i></span>
+                </div>
+              </div>
+            </div>
+            <span class="cmp-tag cmp-tag-before">До</span>
+            <span class="cmp-tag cmp-tag-after">После</span>
+            <div class="cmp-handle" aria-hidden="true"><span><i></i><i></i><i></i></span></div>
+            <input class="cmp-range" type="range" min="0" max="100" value="50" step="0.1" aria-label="Положение разделителя «до / после»">
+          </div>
+
+          <dl class="facts glass reveal">
+            <div><dt>Готовность ПК</dt><dd><s>20</s> → <b class="ok">100</b></dd></div>
+            <div><dt>Разрешение таймера</dt><dd><s>15,625 мс</s> → <b class="ok">0,500 мс</b></dd></div>
+            <div><dt>Изменений за один клик</dt><dd><s>0</s> → <b>до 55</b></dd></div>
+            <div><dt>Снимок для отката</dt><dd><s>нет</s> → <b>создан</b></dd></div>
+          </dl>
+        </div>
+
+        <!-- Фреймтайм и инпут-лаг: рисуются только из настоящего замера (CONFIG.measurements в app.js). -->
+        <div class="frametime glass reveal" id="frametime" hidden>
+          <div class="ft-head">
+            <h3>Фреймтайм: замер</h3>
+            <p class="ft-meta" id="ft-meta"></p>
+          </div>
+          <svg class="ft-chart" id="ft-chart" viewBox="0 0 800 220" preserveAspectRatio="none" role="img" aria-label="График фреймтайма до и после"></svg>
+          <div class="ft-legend"><span class="lg-before">До</span><span class="lg-after">После</span></div>
+          <dl class="ft-stats" id="ft-stats"></dl>
+        </div>
+        <p class="fine reveal" id="ft-pending">Данные демо-режима интерфейса. Цифры фреймтайма и инпут-лага публикуем только по замерам (PresentMon) с описанием ПК.</p>
+      </div>
+    </section>
+
+    <!-- ============ ОТЗЫВЫ ============ -->
+    <section class="section rv-section" id="reviews" aria-labelledby="rv-title">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2 id="rv-title">Что пишут покупатели</h2>
+          <p>Отзывы из Telegram-канала и личных сообщений — тексты те же, что у авторов, без правок по смыслу.</p>
+        </header>
+      </div>
+      <!-- Две бегущие ленты в разные стороны; карточки собираются из CONFIG.reviews в app.js. -->
+      <div class="rv-rows" id="rv-rows" aria-label="Отзывы покупателей"></div>
+      <noscript><div class="wrap"><p class="fine">Отзывы покупателей показываются при включённом JavaScript — их можно прочитать в Telegram-канале «Обсудить».</p></div></noscript>
+    </section>
+
+    <!-- ============ ТАРИФЫ ============ -->
+    <section class="section" id="pricing">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2>Сколько стоит</h2>
+          <p>Ключ привязывается к одному ПК, срок идёт с активации, а не с покупки. Цены в рублях, полностью — без комиссий и автопродления.</p>
+        </header>
+
+        <!-- Главный тариф: карточка, доводы и таблица отличий собираются из CONFIG.plans и CONFIG.compare в app.js. -->
+        <article class="star glass-strong reveal" id="plan-star">
+          <span class="star-ring" aria-hidden="true"></span>
+          <div class="star-inner">
+            <div class="star-offer" id="star-offer"></div>
+            <div class="star-table-wrap">
+              <p class="star-table-cap">Чем отличаются тарифы</p>
+              <table class="cmp-table" id="cmp-table"></table>
+            </div>
+          </div>
+        </article>
+
+        <div class="plans" id="plans">
+          <!-- Остальные тарифы собираются из CONFIG.plans в app.js. -->
+        </div>
+        <noscript><p class="fine">Включите JavaScript, чтобы увидеть тарифы, или напишите в поддержку.</p></noscript>
+        <p class="fine reveal">Условия возврата — в <a href="legal/refund.html">политике возврата</a>. Прирост FPS у каждого ПК свой: цифры в отзывах — замеры покупателей, а не наше обещание.</p>
+      </div>
+    </section>
+
+    <!-- ============ ПОЧЕМУ 124 ============ -->
+    <section class="section" id="lab">
+      <div class="wrap lab">
+        <header class="lab-head reveal">
+          <h2>Почему 124 твика, а&nbsp;не&nbsp;179</h2>
+          <p>Раньше в программе было 179 твиков. В версии 5.1 мы прошлись по каждому и выкинули всё, что не меняет ничего в игре. Несколько записей из этой работы:</p>
+        </header>
+        <ol class="lab-log">
+          <li class="reveal">
+            <span class="lab-tag">−50</span>
+            <p><b>Сняли 50 твиков без эффекта на игру:</b> плацебо, устаревшие ключи реестра, «ускорения» служб, которые и так спят. Если вы их уже применили, «Полный откат» вернёт всё как было.</p>
+          </li>
+          <li class="reveal">
+            <span class="lab-tag">36</span>
+            <p><b>Фоновые службы засыпают на время игры.</b> Пока запущен Rust, программа останавливает до 36 фоновых служб — обновления, телеметрию, апдейтеры браузеров — и запускает их снова, когда вы выходите из игры.</p>
+          </li>
+          <li class="reveal">
+            <span class="lab-tag">R + M</span>
+            <p><b>Очистка памяти в игре не трогает Rust.</b> В игре сжимаются только фоновые программы, а полная очистка — только по вашему сигналу (R + M).</p>
+          </li>
+          <li class="reveal">
+            <span class="lab-tag">0</span>
+            <p><b>Защиту Windows не отключает ни один уровень.</b> UAC, Defender и защиты процессора остаются включёнными даже в «Максимальном».</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ЧТО ВНУТРИ ============ -->
+    <section class="section" id="modules">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2>Что внутри</h2>
+          <p>Скриншоты — из самой программы. Названия отдельных твиков не раскрываем, только категории и их количество.</p>
+        </header>
+
+        <!-- Главная новинка v5: детектор лагов — широкий блок со снимками внахлёст. -->
+        <article class="spot glass-strong reveal" data-spotlight>
+          <div class="spot-copy">
+            <span class="tile-num">Новое в v5</span>
+            <h3>Детектор лагов: не «у&nbsp;вас лагает», а&nbsp;почему</h3>
+            <ul class="spot-list">
+              <li><b>FPS, 1% и 0,1% low</b> каждой игры — по событиям Windows, без внедрения в Rust.</li>
+              <li><b>Причина у каждого фриза:</b> драйвер, диск, нехватка памяти, фоновая программа, перегрев видеокарты — или сама игра.</li>
+              <li><b>Пинг, разброс и потери</b> до сервера отдельно от ПК: видно, где тормозит сеть, а где компьютер.</li>
+              <li><b>Сравнение с прошлой игрой:</b> что дали твики, Игровой режим или разгон — на ваших цифрах, а не на наших.</li>
+            </ul>
+            <p class="tile-fine">Это интерактивное демо — жмите на фризы. Цифры демо-данные. Ваши цифры появятся после первой игры с включённым детектором.</p>
+          </div>
+          <div class="spot-shots"><div class="demo demo-lag" data-demo="lag" role="group" aria-label="Интерактивное демо детектора лагов"></div></div>
+        </article>
+
+        <div class="bento" data-spotlight>
+          <!-- 1. Каталог -->
+          <article class="tile tile-catalog glass reveal" data-tilt data-tilt-max="3">
+            <div class="tile-head">
+              <span class="tile-num">01</span>
+              <h3>124 твика в 17 категориях</h3>
+              <p>Каждое изменение сначала попадает в снимок. Включайте категориями или по одному; то, что на вашем ПК недоступно, программа пометит сама.</p>
+            </div>
+            <ul class="cats" aria-label="Категории и число твиков">
+              <li style="--n:27"><span>Игровая производительность и ядро</span><b>27</b></li>
+              <li style="--n:17"><span>Телеметрия и сбор данных</span><b>17</b></li>
+              <li style="--n:12"><span>Оптимизация системы Windows</span><b>12</b></li>
+              <li style="--n:10"><span>Интерфейс Windows</span><b>10</b></li>
+              <li style="--n:9"><span>Драйвер NVIDIA</span><b>9</b></li>
+              <li style="--n:8"><span>Безопасность и конфиденциальность</span><b>8</b></li>
+              <li style="--n:6"><span>Рекомендуемые настройки Rust</span><b>6</b></li>
+              <li style="--n:6"><span>Интерфейс Rust</span><b>6</b></li>
+              <li style="--n:5"><span>Сеть</span><b>5</b></li>
+              <li style="--n:4"><span>Визуальные эффекты Rust</span><b>4</b></li>
+              <li style="--n:4"><span>Экспериментальные настройки Rust</span><b>4</b></li>
+              <li style="--n:4"><span>Сетевой адаптер</span><b>4</b></li>
+              <li style="--n:3"><span>Мониторинг и проверка железа</span><b>3</b></li>
+              <li style="--n:3"><span>Задачи и службы PRO</span><b>3</b></li>
+              <li style="--n:2"><span>Доступ приложений</span><b>2</b></li>
+              <li style="--n:2"><span>Системные твики и скрытый реестр</span><b>2</b></li>
+              <li style="--n:2"><span>Компоненты Windows (DISM)</span><b>2</b></li>
+            </ul>
+          </article>
+
+          <!-- 2. Таймер -->
+          <article class="tile tile-timer glass reveal" data-tilt data-tilt-max="4">
+            <div class="tile-head">
+              <span class="tile-num">02</span>
+              <h3>Таймер 0,500 мс</h3>
+              <p>Отдельный поток удерживает разрешение системного таймера и не даёт Windows&nbsp;11 сбросить его при свёрнутом окне. Индикатор показывает значение, которое выдала система.</p>
+            </div>
+            <div class="demo" data-demo="timer" role="group" aria-label="Интерактивное демо: Карточка «Удержание таймера»: целевое разрешение 0,50 мс, выдано системой 0,500"></div>
+          </article>
+
+          <!-- 3. Память -->
+          <article class="tile tile-ram glass reveal" data-tilt data-tilt-max="4">
+            <div class="tile-head">
+              <span class="tile-num">03</span>
+              <h3>Очистка памяти, которая не мешает игре</h3>
+              <p>Вне игры — полная очистка по кнопке или когда памяти мало. В игре сжимаются только фоновые программы, Rust не трогается; жёсткая очистка — по R&nbsp;+&nbsp;M.</p>
+            </div>
+            <div class="demo" data-demo="ram" role="group" aria-label="Интерактивное демо: Карточка «Очистка памяти»: свободно 18,5 ГБ, кнопка «Очистить сейчас», умная автоочистка и автоочистка видеопамяти"></div>
+          </article>
+
+          <!-- 4. Буст -->
+          <article class="tile tile-boost glass reveal" data-tilt data-tilt-max="3">
+            <div class="tile-head">
+              <span class="tile-num">04</span>
+              <h3>3 уровня буста</h3>
+              <p>Каждый следующий включает предыдущий. Перед применением — снимок, «Вернуть по умолчанию» откатывает всё. Перед «Максимальным» — мастер: автозагрузка, планировщик, графика Rust и драйвер NVIDIA.</p>
+            </div>
+            <div class="levels">
+              <div class="lvl">
+                <span class="lvl-tag">Безопасный</span>
+                <b>Лёгкий</b>
+                <span class="lvl-n">19 изменений</span>
+                <span class="lvl-bar" style="--w:0.35"></span>
+              </div>
+              <div class="lvl">
+                <span class="lvl-tag">Баланс</span>
+                <b>Средний</b>
+                <span class="lvl-n">39 изменений</span>
+                <span class="lvl-bar" style="--w:0.71"></span>
+              </div>
+              <div class="lvl lvl-risk">
+                <span class="lvl-tag">С подтверждением</span>
+                <b>Максимальный</b>
+                <span class="lvl-n">55 изменений</span>
+                <span class="lvl-bar" style="--w:1"></span>
+              </div>
+            </div>
+            <p class="tile-fine">Экспериментальные пункты «Максимального» программа показывает списком и применяет только после вашего подтверждения.</p>
+          </article>
+
+          <!-- 5. Откат -->
+          <article class="tile tile-rollback glass reveal" data-tilt data-tilt-max="4">
+            <div class="tile-head">
+              <span class="tile-num">05</span>
+              <h3>Полный откат в 1 клик</h3>
+              <p>Свой снимок, а не точка восстановления Windows: реестр с типами значений, службы, схема питания и загрузчик сохраняются до первой записи.</p>
+            </div>
+            <ol class="timeline">
+              <li><i></i><b>Снимок</b><span>до первого изменения</span></li>
+              <li><i></i><b>Изменения</b><span>твики, буст, конфиги</span></li>
+              <li><i></i><b>Полный откат</b><span>всё как было</span></li>
+            </ol>
+          </article>
+
+          <!-- 6. Графика Rust -->
+          <article class="tile tile-binds glass reveal" data-tilt data-tilt-max="3">
+            <div class="tile-head">
+              <span class="tile-num">06</span>
+              <h3>Графика Rust под ваш ПК</h3>
+              <p>Четыре пресета — от «Максимального FPS» до картинки на максимум — и рекомендации по этому компьютеру: текстуры по объёму видеопамяти, буфер сборщика мусора по ОЗУ. Запись — только при закрытой игре, исходные значения сохраняются.</p>
+            </div>
+            <div class="demo" data-demo="graphics" role="group" aria-label="Интерактивное демо: Страница «Графика»: четыре пресета и рекомендации для этого ПК — текстуры, буфер GC, распределение нагрузки ЦП"></div>
+          </article>
+
+          <!-- 7. Игровой режим -->
+          <article class="tile tile-game glass reveal" data-tilt data-tilt-max="3">
+            <div class="tile-head">
+              <span class="tile-num">07</span>
+              <h3>Игровой режим на время игры</h3>
+              <p>Пока запущен Rust, фоновые программы получают режим эффективности Windows и низкий приоритет диска. Игра, античит, Steam, Discord и OBS не трогаются; после выхода всё возвращается.</p>
+            </div>
+            <div class="demo" data-demo="gamemode" role="group" aria-label="Интерактивное демо: Карточка «Игровой режим на время игры» с описанием и переключателем"></div>
+          </article>
+        </div>
+
+        <!-- Зигзаг: снимок и подпись меняются местами — другая ритмика после сетки. -->
+        <div class="zig">
+          <figure class="zig-row reveal">
+            <div class="demo" data-demo="affinity" role="group" aria-label="Интерактивное демо: «Раскладка ядер для Rust»: пресет «Рекомендовано для Ryzen 7 7800X3D», карта ядер, кнопка «Применить»"></div>
+            <figcaption><span class="tile-num">08</span><b>Раскладка ядер</b> Rust получает лучшие ядра, фон — свои, с пониженным приоритетом. Пресеты под архитектуру: один кристалл, Intel с P- и E-ядрами, двухкристальные Ryzen с V-Cache. Параметры запуска Steam программа пишет сама, «Сток» возвращает всё.</figcaption>
+          </figure>
+          <figure class="zig-row reveal">
+            <div class="demo" data-demo="servers" role="group" aria-label="Интерактивное демо: «Серверы и вайпы»: список серверов с онлайном, очередью, пингом и кнопками «Зайти» и «Ждать очередь»"></div>
+            <figcaption><span class="tile-num">09</span><b>Серверы и вайпы</b> Популярные серверы и любой по адресу: онлайн, очередь, дата вайпа и пинг — прямым запросом с вашего ПК. Очередь длинная — программа ждёт и заходит сама, когда она станет короче. Очередь не обходится. <i>Онлайн и пинг в демо — условные.</i></figcaption>
+          </figure>
+          <figure class="zig-row reveal">
+            <div class="demo" data-demo="gamebg" role="group" aria-label="Интерактивное демо: «Фон на время игры»: поиск Windows, SysMain, телеметрия и оверлеи NVIDIA, которые останавливаются на время игры"></div>
+            <figcaption><span class="tile-num">10</span><b>Фон на время игры</b> Поиск Windows, предзагрузка, телеметрия и оверлеи записи встают на паузу, пока вы играете. Только то, что реально работало; после выхода — обратно, даже если программа или ПК аварийно закрылись.</figcaption>
+          </figure>
+        </div>
+
+        <div class="more">
+          <figure class="more-shot glass reveal">
+            <div class="demo" data-demo="filters" role="group" aria-label="Интерактивное демо: «Пресеты экрана»: насыщенность, цифровая насыщенность, чёткость и теплота у каждого пресета, хоткеи"></div>
+            <figcaption><span class="tile-num">11</span><br><b>Фильтры экрана.</b> Насыщенность, цифровая насыщенность, контраст, гамма, чёткость и теплота — системными средствами Windows, без высветления темноты; сезонные пресеты и хоткей для переключения в игре.</figcaption>
+          </figure>
+          <figure class="more-shot glass reveal">
+            <div class="demo" data-demo="clean" role="group" aria-label="Интерактивное демо: «Кэш и логи»: шейдерные кэши, кэш скинов мастерской, логи Rust и временные файлы Windows с размерами"></div>
+            <figcaption><span class="tile-num">12</span><br><b>Кэш и логи.</b> Шейдерные кэши, скины мастерской и карты серверов, логи и дампы Rust, временные файлы Windows — с размером каждой папки до удаления. Файлы самой игры не трогаются.</figcaption>
+          </figure>
+        </div>
+        <ul class="chips reveal" aria-label="Ещё в программе">
+          <li>Простое меню из 5 разделов</li>
+          <li>Запуск с Windows и вопрос «Залетаем в Раст?»</li>
+          <li>Сторож твиков: заметит, если обновление Windows их откатило</li>
+          <li>Бенчмарк процессора, памяти и видеокарты до/после</li>
+          <li>Разгон, кулеры и андервольт по кривой NVIDIA</li>
+          <li>Стресс-тест видеокарты</li>
+          <li>Проверка частоты опроса мыши</li>
+          <li>Прогрев ассетов Rust перед заходом</li>
+          <li>Растяг экрана с автоотменой через 15&nbsp;с</li>
+          <li>Планировщик задач с возвратом</li>
+          <li>Удаление программ штатным деинсталлятором</li>
+          <li>Подробные характеристики железа</li>
+          <li>Карточка сессии для соцсетей — только настоящие цифры</li>
+          <li>Русский и английский интерфейс</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ БЕЗОПАСНОСТЬ ============ -->
+    <section class="section" id="safety">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2>Работает снаружи игры</h2>
+          <p>Описано по исходному коду v5 и пользовательскому соглашению. Никакого кода внутри процесса Rust.</p>
+        </header>
+        <div class="safety" data-spotlight>
+          <div class="pane pane-no glass reveal">
+            <h3>Чего не делает</h3>
+            <ul>
+              <li>Не внедряет DLL в процесс Rust.</li>
+              <li>Не перехватывает API: ни DirectX, ни Vulkan, ни системные функции.</li>
+              <li>Не читает и не записывает память игры.</li>
+              <li>Не изменяет процесс DWM.</li>
+              <li>Фильтров вроде «Светлой ночи» нет — они удалены из программы.</li>
+            </ul>
+          </div>
+          <div class="pane pane-yes glass reveal">
+            <h3>Что делает</h3>
+            <ul>
+              <li>Меняет настройки Windows: планировщик, питание, службы, задания и реестр — со снимком до изменений.</li>
+              <li>Удерживает системный таймер 0,500&nbsp;мс стандартным вызовом Windows.</li>
+              <li>Освобождает память фоновых программ; в игре сам Rust не трогается.</li>
+              <li>Считает кадры и причины фризов по событиям Windows (ETW) — процесс игры не открывается.</li>
+              <li>Пишет keys.cfg и client.cfg Rust только при закрытой игре и с резервной копией.</li>
+              <li>Ходит в сеть за проверкой ключа, обновлениями (с подписью, с собственного сервера по ключу) и подписанными инструкциями твиков; отправляет журнал применений — какой твик, успешно ли, сколько занял.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="notice glass reveal">Правила серверов и решения античита определяют их владельцы. Мы не обещаем, что блокировка невозможна: ответственность за соблюдение правил конкретного сервера лежит на игроке.</p>
+      </div>
+    </section>
+
+    <!-- ============ ПОСЛЕ ОПЛАТЫ ============ -->
+    <section class="section" id="after">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2>После оплаты</h2>
+          <p>Программа публично не распространяется: её и лицензионный ключ покупатель получает после оплаты. Дальше — три шага.</p>
+        </header>
+        <ol class="after-steps">
+          <li class="reveal">
+            <span class="after-n">1</span>
+            <h3>Оплатите тариф</h3>
+            <p>Оплата проходит на lava.top: СБП, карты МИР, зарубежные карты или оплата в EUR (PayPal, SEPA).</p>
+          </li>
+          <li class="reveal" style="--delay:120ms">
+            <span class="after-n">2</span>
+            <h3>Заберите ключ и программу</h3>
+            <p>После оплаты вы вернётесь на сайт, и ключ появится на экране сразу, вместе со ссылкой на программу. Кнопка «Получить в Telegram» — и бот @Rustomizator_bot пришлёт то же самое туда.</p>
+          </li>
+          <li class="reveal" style="--delay:240ms">
+            <span class="after-n">3</span>
+            <h3>Введите ключ</h3>
+            <p>Запустите программу от имени администратора и вставьте ключ. Ключ привязывается к этому компьютеру, и с этого момента начинается срок. При первом запуске примите пользовательское соглашение.</p>
+          </li>
+        </ol>
+        <p class="fine reveal">Вопрос до покупки — <a data-presale-link href="https://t.me/Rustomizator_bot?start=presale" target="_blank" rel="noopener">напишите боту</a>. Сброс привязки при смене компьютера — через <a data-support-link href="https://t.me/Rustomizator_bot?start=support" target="_blank" rel="noopener">поддержку</a>.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="wrap wrap-narrow">
+        <header class="section-head reveal">
+          <h2>Вопросы</h2>
+        </header>
+        <div class="faq glass reveal">
+          <details>
+            <summary>Может ли это привести к бану?</summary>
+            <p>Программа работает снаружи игры: не внедряет DLL, не перехватывает API и не трогает память Rust. Но решения античита и правила серверов определяют их владельцы, поэтому гарантию «бана не будет» мы не даём — и никто честно не может.</p>
+          </details>
+          <details>
+            <summary>Не сломает ли это Windows?</summary>
+            <p>Перед первым изменением программа сохраняет снимок: реестр, службы, схему питания и загрузчик. «Полный откат» возвращает всё в исходное состояние. Защиту Windows (UAC, Defender, защиты процессора) не отключает ни один уровень буста; экспериментальные пункты «Максимального» программа показывает списком и применяет только после подтверждения.</p>
+          </details>
+          <details>
+            <summary>Влияет ли на гарантию ПК?</summary>
+            <p>Программа меняет настройки Windows и файлы конфигурации Rust. BIOS и прошивки она не трогает; разгон видеокарты — только по вашему действию, а «Сброс в сток» возвращает заводские значения. В тарифе с личной настройкой изменения за пределами программы делаются в онлайн-сеансе только с вашего согласия — условия гарантии производителя уточните до сеанса.</p>
+          </details>
+          <details>
+            <summary>Как проходит активация?</summary>
+            <p>Оплачиваете тариф на lava.top — ключ появляется на экране сразу после оплаты. Вводите его в программе — ключ привязывается к этому ПК, и с этого момента начинается срок действия.</p>
+          </details>
+          <details>
+            <summary>Можно ли перенести ключ на другой ПК?</summary>
+            <p>Один ключ работает на одном ПК. Если вы сменили компьютер, напишите в поддержку — привязку можно сбросить.</p>
+          </details>
+          <details>
+            <summary>Нужны ли права администратора и интернет?</summary>
+            <p>Права администратора нужны: без них Windows не даст изменить службы и схему питания. Интернет нужен для активации и периодической проверки ключа. Ещё программа получает с нашего сервера подписанные инструкции твиков и отправляет журнал применений: какой твик, успешно ли, сколько занял — с ключом и идентификатором ПК, без ваших файлов. Пинг игровых серверов — только во вкладке «Серверы» и в детекторе лагов, если вы его включили.</p>
+          </details>
+          <details>
+            <summary>Можно ли вернуть деньги?</summary>
+            <p>До активации ключа — да, в течение 14 дней с покупки. Возврат денежных средств не производится после фактической передачи и активации цифрового лицензионного ключа, а также после начала или завершения услуги персональной оптимизации ПК в Discord. Подробно — в <a href="legal/refund.html">политике возврата</a>.</p>
+          </details>
+          <details>
+            <summary>Что входит в личную настройку в Discord?</summary>
+            <p>Это онлайн-консультация в Discord: вы показываете экран, а мы вместе разбираем и настраиваем Windows, драйверы, Rust и Rustomizator под ваше железо. Во время сеанса можно задавать любые вопросы по оптимизации. Изменения за пределами программы выполняются только с вашего согласия по заранее согласованному списку: перед ними нужно написать «Согласен» в чат Discord. Риски для железа описаны в оферте, раздел 11. Плюс пожизненная лицензия Rustomizator v5.</p>
+          </details>
+          <details>
+            <summary>На каких системах работает?</summary>
+            <p>Windows 10 и 11, 64-бит. Часть твиков работает только на Windows 11 — программа сама отметит, что недоступно на вашем ПК.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <img src="assets/logo-48.webp" width="24" height="24" alt="">
+          <span class="brand-name">Rustomizator</span>
+          <span class="brand-ver" data-version>v5.3.0</span>
+        </a>
+        <p class="fine">Версия <span data-version>v5.3.0</span></p>
+        <p class="fine" data-updated hidden></p>
+        <p class="fine">Не связано с Facepunch Studios и Valve. Rust и Steam — товарные знаки их владельцев.</p>
+      </div>
+      <div class="footer-col">
+        <h2>До покупки</h2>
+        <a class="tg-link" data-support="telegram" href="https://t.me/rustomizator">Telegram-канал «Обсудить»</a>
+        <a class="tg-link" data-support-link href="https://t.me/Rustomizator_bot?start=support" target="_blank" rel="noopener">Поддержка — @Rustomizator_bot</a>
+        <a data-presale-link href="https://t.me/Rustomizator_bot?start=presale" target="_blank" rel="noopener">Вопрос до покупки</a>
+      </div>
+    </div>
+    <p class="wrap fine copy">© <span data-year>2026</span> Rustomizator. Оплата принимается через lava.top.</p>
+    <!-- Документы: мелкие и приглушённые ссылки; реквизиты продавца — по кнопке «Юридическая информация» (legal-info.js). -->
+    <nav class="wrap footer-legal" aria-label="Документы">
+      <a href="legal/terms.html">Пользовательское соглашение</a>
+      <a href="legal/privacy.html">Конфиденциальность</a>
+      <a href="legal/refund.html">Возврат</a>
+    </nav>
+    <div class="wrap legal-info-row"><button type="button" class="legal-info-btn" data-legal-info>Юридическая информация</button></div>
+  </footer>
+
+  <!-- Окно оформления заказа: выбор платёжного шлюза перед переходом на страницу товара lava.top. -->
+  <dialog class="pay" id="pay" aria-labelledby="pay-title">
+    <div class="pay-card">
+      <button class="pay-x" type="button" aria-label="Закрыть окно оформления">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+      </button>
+      <p class="pay-kicker">Оформление</p>
+      <h2 id="pay-title">Тариф</h2>
+      <label class="pay-label" for="pay-email">Email — обязательно</label>
+      <input class="pay-tg" id="pay-email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" maxlength="254" required placeholder="you@mail.ru" aria-describedby="pay-email-hint">
+      <p class="pay-tg-hint" id="pay-email-hint">На эту почту Lava пришлёт чек.</p>
+      <label class="pay-label" for="pay-tg">Telegram — куда прислать ключ и программу</label>
+      <input class="pay-tg" id="pay-tg" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="@username (необязательно)" aria-describedby="pay-tg-hint">
+      <p class="pay-tg-hint" id="pay-tg-hint">Бот <b>@Rustomizator_bot</b> пришлёт ключ, актуальный файл и инструкцию. Если вы ещё не запускали бота — после оплаты нажмите «Получить в Telegram».</p>
+      <p class="pay-label" id="pay-methods-label">Способ оплаты</p>
+      <div class="pay-methods">
+        <button class="pay-method" type="button" data-method="sbp">
+          <span class="pm-ico pm-tile"><img src="assets/pay/sbp.svg" alt="СБП" width="30" height="30" decoding="async"></span>
+          <span class="pm-top" aria-hidden="true">ТОП</span>
+          <span><b>СБП</b><small>Оплата из РФ по QR-коду или выбору банка</small></span>
+        </button>
+        <button class="pay-method" type="button" data-method="card-ru">
+          <span class="pm-ico pm-flag"><img class="pm-wave" src="assets/pay/flag-ru-wave.webp" alt="" width="42" height="29" decoding="async"><i class="pm-badge"><img src="assets/pay/mir.svg" alt="Мир" width="22" height="7"></i></span>
+          <span><b>Картой РФ</b><small>Карты банков РФ, в том числе Мир · RUB</small></span>
+        </button>
+        <button class="pay-method" type="button" data-method="card-by">
+          <span class="pm-ico pm-flag"><img class="pm-wave" src="assets/pay/flag-by-wave.webp" alt="" width="42" height="29" decoding="async"><i class="pm-badge"><img src="assets/pay/mir.svg" alt="Мир" width="22" height="7"></i></span>
+          <span><b>Картой РБ (Мир)</b><small>Карта Мир белорусского банка · RUB</small></span>
+        </button>
+        <button class="pay-method" type="button" data-method="card-ua">
+          <span class="pm-ico pm-flag"><img class="pm-wave" src="assets/pay/flag-ua-wave.webp" alt="" width="42" height="29" decoding="async"></span>
+          <span><b>Картой УКР (UAH → USD)</b><small>Visa / Mastercard, банк сам спишет гривны в USD</small></span>
+        </button>
+        <button class="pay-method" type="button" data-method="paypal">
+          <span class="pm-ico pm-tile"><img src="assets/pay/paypal.svg" alt="PayPal" width="30" height="30" decoding="async"></span>
+          <span><b>PayPal</b><small>Оплата аккаунтом PayPal · USD</small></span>
+        </button>
+        <button class="pay-method" type="button" data-method="europe">
+          <span class="pm-ico pm-flag"><img src="assets/pay/flag-eu.svg" alt="" width="30" height="30" decoding="async"></span>
+          <span><b>Оплата из Европы</b><small>Карты, iDEAL, SEPA, Bancontact, Bizum, MB WAY · EUR</small></span>
+        </button>
+        <div class="pay-method pm-split" role="group" aria-label="Apple Pay — выберите валюту">
+          <span class="pm-ico pm-tile pm-wide"><img src="assets/pay/applepay.svg" alt="Apple Pay" width="40" height="17" decoding="async"></span>
+          <span><b>Apple Pay</b><small>Выберите валюту</small></span>
+          <span class="pm-cur">
+            <button class="pay-method pm-chip" type="button" data-method="applepay-usd">USD</button>
+            <button class="pay-method pm-chip" type="button" data-method="applepay-eur">EUR</button>
+          </span>
+        </div>
+      </div>
+      <p class="pay-status" id="pay-status" role="status" aria-live="polite" hidden></p>
+      <p class="pay-fine">Счёт обычно создаётся до 5 секунд, иногда до 30. Безопасная оплата через шлюз Lava.top. После оплаты вы вернётесь на сайт, и ключ появится на экране сразу.</p>
+      <p class="pay-fine">Покупая, вы принимаете <a href="legal/terms.html">оферту</a> и <a href="legal/refund.html">условия возврата</a>.</p>
+    </div>
+  </dialog>
+
+
+  <!-- Ошибка создания счёта: «Повторить» (тот же ключ идемпотентности) и «Написать в поддержку». -->
+  <dialog class="pay pay-alert" id="pay-error" role="alertdialog" aria-labelledby="pay-error-title" aria-describedby="pay-error-text">
+    <div class="pay-card">
+      <button class="pay-x" type="button" aria-label="Закрыть">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+      </button>
+      <p class="pay-kicker">Оплата</p>
+      <h2 id="pay-error-title">Не удалось связаться с платёжной системой</h2>
+      <p class="pay-tg-hint" id="pay-error-text"></p>
+      <div class="pay-alert-acts">
+        <a class="btn btn-primary pay-direct" data-direct href="#" target="_blank" rel="noopener" hidden>Оплатить сразу на lava.top</a>
+        <button class="btn btn-primary" type="button" data-retry>Повторить</button>
+        <a class="btn btn-ghost" data-support-link href="https://t.me/Rustomizator_bot?start=support" target="_blank" rel="noopener">Написать в поддержку</a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Видеоотзыв: плеер открывается по клику на карточку ленты. -->
+  <dialog class="rv-video" id="rv-video" aria-label="Видеоотзыв">
+    <button class="pay-x" type="button" aria-label="Закрыть видео">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+    </button>
+    <video controls playsinline preload="none"></video>
+  </dialog>
+
+  <script src="app.js?v=pay2" defer></script>
+  <script src="legal-info.js" defer></script>
+  <script src="demos.js" defer></script>
+</body>
+</html>

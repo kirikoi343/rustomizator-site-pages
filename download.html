@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <script>if(location.hostname==="rustomizator.onrender.com")location.replace("https://rustomizator.com"+location.pathname+location.search+location.hash);</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Скачать Rustomizator V5</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#06080D">
+  <link rel="icon" href="assets/favicon.ico">
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><span class="neb neb-cyan"></span><span class="neb neb-violet"></span><span class="neb neb-blue"></span><div class="bg-grid"></div><canvas class="bg-fx"></canvas><span class="bg-vignette"></span></div>
+  <main class="legal">
+    <article class="legal-card glass">
+      <a class="back" href="index.html">← На главную</a>
+      <h1>Скачать Rustomizator V5</h1>
+      <p class="meta">Актуальная версия: <span data-version>v5.3.0</span></p>
+      <p class="meta" data-updated hidden></p>
+
+      <!-- После оплаты Lava возвращает сюда (?session=…): страница ждёт подтверждения и показывает ключ без почты и номера заказа. -->
+      <section class="dl-buy" id="dl-buy" aria-live="polite" hidden>
+        <div class="dl-wait" id="dl-wait">
+          <span class="dl-spin" aria-hidden="true"></span>
+          <p class="dl-wait-title" id="dl-wait-title">Ждём подтверждение оплаты…</p>
+          <p class="dl-hint" id="dl-wait-hint">Обычно это занимает несколько секунд. Не закрывайте страницу.</p>
+        </div>
+        <div class="dl-reveal" id="dl-reveal" hidden>
+          <p class="dl-ok-head">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            Оплата прошла — ваш лицензионный ключ
+          </p>
+          <div class="dl-key-big" id="dl-big-key" aria-label="Лицензионный ключ"></div>
+          <button class="btn btn-primary btn-lg btn-block" id="dl-big-copy" type="button">Скопировать ключ</button>
+          <ol class="dl-steps">
+            <li><b>Скачайте</b> программу кнопкой ниже.</li>
+            <li><b>Запустите</b> Rustomizator от имени администратора.</li>
+            <li><b>Вставьте ключ</b> при первом запуске: он привяжется к этому ПК, и с этого момента пойдёт срок.</li>
+          </ol>
+          <a class="btn btn-ghost btn-lg btn-block" id="dl-big-link" rel="noopener noreferrer" download>Скачать Rustomizator V5 (.exe)</a>
+          <a class="btn btn-primary btn-lg btn-block" id="dl-big-tg" href="https://t.me/Rustomizator_bot" target="_blank" rel="noopener noreferrer" hidden>Получить ключ и файл в Telegram</a>
+          <p class="dl-hint" id="dl-big-tg-hint" hidden>Бот пришлёт ключ, актуальную версию программы и пошаговую инструкцию — удобно, если страницу закроете.</p>
+          <p class="dl-hint">Сохраните ключ. Страница запомнила ваш заказ: ключ можно открыть снова по этой же ссылке.</p>
+          <p class="dl-hint">Вопросы по ключу — <a data-support-link href="https://t.me/Rustomizator_bot?start=support" target="_blank" rel="noopener">в поддержку</a>.</p>
+        </div>
+      </section>
+
+      <div class="dl-manual" id="dl-manual">
+      <p>Файл выдаётся после проверки. Введите лицензионный ключ или номер заказа Lava.top, если они у вас есть.</p>
+
+      <form class="dl-form" id="dl-form" novalidate>
+        <label class="dl-label" for="dl-key">Номер заказа Lava.top или лицензионный ключ</label>
+        <input class="dl-input" id="dl-key" name="key" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="128" placeholder="Номер заказа Lava.top или лицензионный ключ" aria-describedby="dl-status">
+        <button class="btn btn-primary btn-lg btn-block" id="dl-submit" type="submit">Проверить и скачать</button>
+      </form>
+
+      <p class="dl-status" id="dl-status" role="status" aria-live="polite" hidden></p>
+
+      <div class="dl-ok" id="dl-ok" hidden>
+        <p class="dl-ok-head">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          Ключ подтверждён
+        </p>
+        <div class="dl-key-box" id="dl-key-box" hidden>
+          <p class="dl-key-label">Ваш лицензионный ключ:</p>
+          <div class="dl-key-row">
+            <code class="dl-key-value" id="dl-key-value"></code>
+            <button class="btn btn-ghost" id="dl-key-copy" type="button">Скопировать ключ</button>
+          </div>
+          <p class="dl-hint">Сохраните ключ: он понадобится при первом запуске программы.</p>
+        </div>
+        <a class="btn btn-primary btn-lg btn-block" id="dl-link" rel="noopener noreferrer" download>Скачать Rustomizator V5 (.exe)</a>
+        <p class="dl-hint">Скачивание начнётся само. Если этого не произошло, нажмите кнопку выше.</p>
+      </div>
+
+      </div>
+
+      <section class="dl-recover" id="dl-recover" aria-labelledby="dl-recover-title">
+        <h2 class="dl-recover-title" id="dl-recover-title">Не отобразился ключ?</h2>
+        <form class="dl-form" id="dl-recover-form" novalidate>
+          <label class="dl-label" for="dl-recover-input">Введите почту, с которой платили, или номер счёта из чека Lava:</label>
+          <input class="dl-input" id="dl-recover-input" type="text" inputmode="email" autocomplete="email" spellcheck="false" maxlength="254" placeholder="you@mail.com или 9ce5bb91-7ece-498a-9b18-8fa8c245fb4f">
+          <button class="btn btn-ghost btn-lg btn-block" id="dl-recover-submit" type="submit">Найти ключ</button>
+        </form>
+        <p class="dl-status" id="dl-recover-status" role="status" aria-live="polite" hidden></p>
+        <p class="dl-help">Ключ не пришёл? <a data-support-link href="https://t.me/Rustomizator_bot?start=support" target="_blank" rel="noopener">Написать в поддержку</a> · <span class="mono">@Rustomizator_bot</span></p>
+      </section>
+
+      <p class="fine">Проверка ключа ничего не активирует: ключ привязывается к вашему компьютеру только при первом запуске программы. Условия — в <a href="legal/terms.html">оферте</a> и <a href="legal/refund.html">политике возврата</a>.</p>
+    </article>
+  </main>
+  <footer class="footer footer-min">
+    <nav class="wrap footer-legal" aria-label="Документы">
+      <a href="legal/terms.html">Пользовательское соглашение</a>
+      <a href="legal/privacy.html">Конфиденциальность</a>
+      <a href="legal/refund.html">Возврат</a>
+    </nav>
+    <div class="wrap legal-info-row"><button type="button" class="legal-info-btn" data-legal-info>Юридическая информация</button></div>
+  </footer>
+  <script src="app.js" defer></script>
+  <script src="legal-info.js" defer></script>
+  <script src="download.js" defer></script>
+</body>
+</html>
